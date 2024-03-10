@@ -2376,17 +2376,48 @@ angular
     $scope.basePath = "";
     $scope.pathTree = {};
     $scope.files_loading = true;
+    $scope.knownMetadata = {};
     $scope.populateFiles = function() {
       $scope.$parent.npkDB.listBucketContents(DICTIONARY_BUCKET.name, "", DICTIONARY_BUCKET.region).then((data) => {
         $scope.files = {};
         Object.keys(data.Contents).forEach(function (e) {
           $scope.files[data.Contents[e].Key] = data.Contents[e];
+          $scope.files[data.Contents[e].Key].metadata = {};
+          $scope.retrieveS3Metadata(DICTIONARY_BUCKET.name, data.Contents[e].Key, DICTIONARY_BUCKET.region).then((metadata) => {
+            console.log(metadata);
+            $scope.files[data.Contents[e].Key].metadata = metadata;
+            $scope.$digest();
+          });
         });
 
         $scope.pathTree = $scope.getPathTree(Object.keys($scope.files));
 
         $scope.files_loading = false;
         $scope.$digest();
+      });
+    }
+
+    $scope.retrieveS3Metadata = function(bucket, key, region) {
+
+      bucket = (bucket == "self") ? USERDATA_BUCKET.name : bucket;
+      bucket = (bucket == "dict") ? DICTIONARY_BUCKET.name : bucket;
+
+      if (typeof $scope.knownMetadata[bucket + ":" + key] != "undefined") {
+        return new Promise((success, failure) => {
+          success($scope.knownMetadata[bucket + ":" + key]);
+        });
+      }
+
+      $scope.retrievingMetadata++;
+
+      return new Promise((success, failure) => {
+        $scope.$parent.npkDB.headObject(bucket, key, region).then((data) => {
+          $scope.knownMetadata[bucket + ":" + key] = data.Metadata;
+
+          $scope.retrievingMetadata--;
+
+          return success(data.Metadata);
+        });
       });
     }
 

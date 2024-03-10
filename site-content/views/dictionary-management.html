@@ -64,6 +64,12 @@
                           <div class="bg-dark text-center" ng-show="files_loading" style="padding: 25px;">
                             <img height="50px" width="50px" src="assets/images/loading.gif">
                           </div>
+                          <div class="text-left ml-3">
+                            <small>
+                              <b>Red filenames indicate missing S3 metadata.</b><br>
+                              &nbsp;&nbsp;&nbsp;&nbsp;These will still function for campaigns, but will show errors in time estimate calculations.
+                            </small>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -153,7 +159,7 @@
     </div>
     <div class="d-flex" ng-if="typeOf(y) == 'string'">
       <h6>
-        <a href="{{ signedUrlOf(y) }}" target="_blank">
+        <a href="{{ signedUrlOf(y) }}" ng-class="(!!files[y].metadata.lines) ? 'text-primary' : 'text-danger'" target="_blank">
           <i class="fa fa-file"></i>
           {{ x }}
         </a>
