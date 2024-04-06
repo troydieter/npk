@@ -1075,6 +1075,17 @@ local regionKeys = std.objectFields(settings.regions);
 	'sync_npkcomponents.tf.json': {
 		resource: {
 			null_resource: {
+				set_default_multipart_threshold: {
+					triggers: {
+				        content: "${timestamp()}"
+				    },
+
+				    provisioner: {
+				    	"local-exec": {
+				        	command: "aws configure set default.s3.multipart_threshold 5GB",
+					    }
+				    }
+				},
 				sync_npkcomponents: {
 				    triggers: {
 				        content: "${timestamp()}"
@@ -1082,15 +1093,17 @@ local regionKeys = std.objectFields(settings.regions);
 
 				    provisioner: {
 				    	"local-exec": {
-				        	command: "aws s3 sync s3://npk-dictionary-west-2-20181029005812750900000002 s3://${aws_s3_bucket.dictionary.id} --request-payer requester --source-region us-west-2 --region " + settings.primaryRegion,
+				        	command: "aws s3 sync s3://npk-dictionary-west-2-20181029005812750900000002 s3://${aws_s3_bucket.dictionary.id} --metadata-directive COPY --request-payer requester --source-region us-west-2 --region " + settings.primaryRegion,
 					    }
-				    }
+				    },
+
+				    depends_on: ["null_resource.set_default_multipart_threshold"]
 				}
 			}
 		},
 		output: {
 			aws_s3_sync_bucket_command: {
-				value: "aws s3 sync s3://npk-dictionary-west-2-20181029005812750900000002 s3://${aws_s3_bucket.dictionary.id} --request-payer requester --source-region us-west-2 --region " + settings.primaryRegion
+				value: "aws s3 sync s3://npk-dictionary-west-2-20181029005812750900000002 s3://${aws_s3_bucket.dictionary.id} --metadata-directive COPY --request-payer requester --source-region us-west-2 --region " + settings.primaryRegion
 			}
 		}
 	},

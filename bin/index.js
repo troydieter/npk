@@ -492,7 +492,7 @@ function showHelloBanner() {
 
 function showHelpBanner() {
 	console.log("[!] Deployment failed. If you're having trouble, hop in Discord for help.");
-	console.log("--> Porchetta Industries Discord: https://discord.gg/k5PQnqSNDF");
+	console.log("--> NPK Official Discord: https://discord.gg/k5PQnqSNDF");
 	console.log("");
 	process.exit(1);
 }
