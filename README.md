@@ -16,7 +16,7 @@ Let's face it - even the beastliest cracking rig spends a lot of time at idle. Y
 
 Paste a one-liner into AWS CloudShell. Pretty easy.
 
-```source <(curl https://npkproject.io/cloudshell_install.sh)```
+```source <(curl https://raw.githubusercontent.com/troydieter/npk/refs/heads/main/cloudshell_install.sh)```
 
 If you'd like to use the `dev` branch to use beta features, use this one-liner instead:
 

@@ -219,7 +219,6 @@ local regionKeys = std.objectFields(settings.regions);
 			}
 		}
 	},
-	'backend.tf.json': sonnetry.bootstrap('c6fc_npk'),
 	'cloudfront.tf.json': {
 		resource: cloudfront.resource(settings),
 		output: cloudfront.output
@@ -858,7 +857,15 @@ local regionKeys = std.objectFields(settings.regions);
 					source: "hashicorp/archive",
 					version: "~> 2.2.0"
 				}
-			}
+			},
+			"backend": {
+				"s3": {
+				  "bucket": settings.tfStateBucket,
+				  "key": "npk/terraform.tfstate",
+				  "region": settings.primaryRegion,
+				  "encrypt": true
+				}
+			  }
 		},
 		provider: [{
 			aws: {
@@ -1121,6 +1128,7 @@ local regionKeys = std.objectFields(settings.regions);
 						userdata_bucket: "${aws_s3_bucket.user_data.id}",
 						dictionary_bucket: "${aws_s3_bucket.dictionary.id}",
 						primary_region: settings.primaryRegion,
+						terraform_state_bucket: settings.tfStateBucket,
 						use_SAML: settings.useSAML,
 						saml_domain: "",
 						saml_redirect: "",
@@ -1204,7 +1212,8 @@ local regionKeys = std.objectFields(settings.regions);
 	    	region: { default: settings.primaryRegion },
 	    	campaign_data_ttl: { default: settings.campaign_data_ttl },
 	    	campaign_max_price: { default: settings.campaign_max_price },
-	    	useSAML: { default: settings.useSAML }
+	    	useSAML: { default: settings.useSAML },
+			terraform_state_bucket: { default: settings.tfStateBucket }
 		}
 	}
 } + {
