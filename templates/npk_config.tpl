@@ -25,7 +25,7 @@ angular.module('app')
 	.constant('FAMILIES', ${families})
 	.constant('QUOTAS', ${quotas})
 	.constant('REGIONS', ${regions})
-	.constant('TERRAFORM_STATE_BUCKET', ${terraform_state_bucket})
+	.constant('tfStateBucket', ${tfStateBucket})
 	.constant('USERDATA_BUCKET', {
 		name: "${userdata_bucket}",
 		region: "${primary_region}"
