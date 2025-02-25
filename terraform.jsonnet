@@ -1128,7 +1128,7 @@ local regionKeys = std.objectFields(settings.regions);
 						userdata_bucket: "${aws_s3_bucket.user_data.id}",
 						dictionary_bucket: "${aws_s3_bucket.dictionary.id}",
 						primary_region: settings.primaryRegion,
-						terraform_state_bucket: settings.tfStateBucket,
+						tfStateBucket: settings.tfStateBucket,
 						use_SAML: settings.useSAML,
 						saml_domain: "",
 						saml_redirect: "",
@@ -1213,7 +1213,7 @@ local regionKeys = std.objectFields(settings.regions);
 	    	campaign_data_ttl: { default: settings.campaign_data_ttl },
 	    	campaign_max_price: { default: settings.campaign_max_price },
 	    	useSAML: { default: settings.useSAML },
-			terraform_state_bucket: { default: settings.tfStateBucket }
+			tfStateBucket: { default: settings.tfStateBucket }
 		}
 	}
 } + {
