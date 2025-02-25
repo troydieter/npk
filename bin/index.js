@@ -43,7 +43,8 @@ async function deploy(skipInit, autoApprove) {
 		'sAMLMetadataFile',
 		'sAMLMetadataUrl',
 		'primaryRegion',
-		'useRegions'
+		'useRegions',
+		'tfStateBucket'
 	];
 
 	const badSettings = Object.keys(settings)
@@ -358,6 +359,12 @@ async function configureInteractive() {
 			filter(value) {
 				return value / 1;
 			}
+		},
+		{
+			type: 'input',
+			name: 'tfStateBucket',
+			message: 'Enter the name of your Terraform state bucket:',
+			default: settings.tfStateBucket ?? ""
 		}, {
 			type: 'confirm',
 			name: 'deploy',
